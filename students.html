@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quản lý sinh viên</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>QLSV Cloud</h2>
+
+    <a href="dashboard.html">Dashboard</a>
+
+    <a href="students.html">Sinh viên</a>
+
+</div>
+
+<div class="content">
+
+<h1>Quản lý sinh viên</h1>
+
+<div class="form">
+
+    <input type="text"
+    id="studentId"
+    placeholder="Mã sinh viên">
+
+    <input type="text"
+    id="fullName"
+    placeholder="Họ tên">
+
+    <input type="text"
+    id="className"
+    placeholder="Lớp">
+
+    <input type="email"
+    id="email"
+    placeholder="Email">
+
+    <button onclick="addStudent()">
+        Thêm sinh viên
+    </button>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Mã SV</th>
+<th>Họ tên</th>
+<th>Lớp</th>
+<th>Email</th>
+<th>Hành động</th>
+</tr>
+
+</thead>
+
+<tbody id="studentTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script type="module" src="students.js"></script>
+
+</body>
+</html>

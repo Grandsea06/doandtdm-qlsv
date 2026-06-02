@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>QLSV Cloud</h2>
+
+    <a href="dashboard.html">Dashboard</a>
+
+    <a href="students.html">Sinh viên</a>
+
+    <button onclick="logout()">
+        Đăng xuất
+    </button>
+
+</div>
+
+<div class="content">
+
+    <h1>Dashboard</h1>
+
+    <div class="cards">
+
+        <div class="card">
+            <h2 id="studentCount">0</h2>
+            <p>Sinh viên</p>
+        </div>
+
+        <div class="card">
+            <h2>5</h2>
+            <p>Lớp học</p>
+        </div>
+
+        <div class="card">
+            <h2>3</h2>
+            <p>Khoa</p>
+        </div>
+
+    </div>
+
+</div>
+<script type="module" src="auth.js"></script>
+<script type="module" src="dashboard.js"></script>
+
+</body>
+</html>
