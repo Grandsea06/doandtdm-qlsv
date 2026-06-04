@@ -2,77 +2,202 @@
 <html lang="vi">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Quản lý sinh viên</title>
+    <meta charset="UTF-8">
 
-<link rel="stylesheet" href="style.css">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Quản lý sinh viên</title>
+
+    <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<div class="sidebar">
+    <!-- Sidebar -->
 
-    <h2>QLSV Cloud</h2>
+    <div class="sidebar">
 
-    <a href="dashboard.html">Dashboard</a>
+        <h2>QLSV Cloud</h2>
 
-    <a href="students.html">Sinh viên</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="students.html">Sinh viên</a>
+        <a href="classes.html">Lớp học</a>
+        <a href="department.html"> Khoa</a>
+        <a href="teachers.html">Giảng viên</a>
+        <button onclick="logout()">
+            Đăng xuất
+        </button>
 
-</div>
+    </div>
 
-<div class="content">
+    <!-- Main -->
 
-<h1>Quản lý sinh viên</h1>
+    <div class="main">
 
-<div class="form">
+        <h1>Quản lý sinh viên</h1>
 
-    <input type="text"
-    id="studentId"
-    placeholder="Mã sinh viên">
+        <div class="toolbar">
 
-    <input type="text"
-    id="fullName"
-    placeholder="Họ tên">
+            <button onclick="openAddModal()">
+                + Thêm sinh viên
+            </button>
 
-    <input type="text"
-    id="className"
-    placeholder="Lớp">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Tìm kiếm sinh viên..."
+            >
 
-    <input type="email"
-    id="email"
-    placeholder="Email">
+        </div>
 
-    <button onclick="addStudent()">
-        Thêm sinh viên
-    </button>
+        <table>
 
-</div>
+            <thead>
 
-<table>
+                <tr>
 
-<thead>
+                    <th>Mã SV</th>
+                    <th>Họ tên</th>
+                    <th>Giới tính</th>
+                    <th>Khoa</th>
+                    <th>Lớp</th>
+                    <th>Trạng thái</th>
+                    <th>Email</th>
+                    <th>Hành động</th>
 
-<tr>
-<th>Mã SV</th>
-<th>Họ tên</th>
-<th>Lớp</th>
-<th>Email</th>
-<th>Hành động</th>
-</tr>
+                </tr>
 
-</thead>
+            </thead>
 
-<tbody id="studentTable">
+            <tbody id="studentTable">
 
-</tbody>
+            </tbody>
 
-</table>
+        </table>
 
-</div>
+    </div>
 
-<script type="module" src="students.js"></script>
+    <!-- Modal -->
+
+    <div id="studentModal" class="modal">
+
+        <div class="modal-content">
+
+            <h2 id="modalTitle">
+                Thêm sinh viên
+            </h2>
+
+            <input
+                type="text"
+                id="studentId"
+                placeholder="Mã sinh viên"
+            >
+
+            <input
+                type="text"
+                id="fullName"
+                placeholder="Họ tên"
+            >
+
+            <input
+                type="date"
+                id="dateOfBirth"
+            >
+
+            <select id="gender">
+
+                <option value="Nam">
+                    Nam
+                </option>
+
+                <option value="Nữ">
+                    Nữ
+                </option>
+
+            </select>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Email"
+            >
+
+            <input
+                type="text"
+                id="phone"
+                placeholder="Số điện thoại"
+            >
+
+            <input
+                type="text"
+                id="address"
+                placeholder="Địa chỉ"
+            >
+
+            <select id="department">
+
+    <option value="">
+        -- Chọn khoa --
+    </option>
+
+</select>
+
+            <select id="className">
+
+                <option value="">
+                    -- Chọn lớp --
+                </option>
+
+            </select>
+
+            <input
+                type="text"
+                id="academicYear"
+                placeholder="Khóa học"
+            >
+
+            <select id="status">
+
+                <option value="Đang học">
+                    Đang học
+                </option>
+
+                <option value="Bảo lưu">
+                    Bảo lưu
+                </option>
+
+                <option value="Tốt nghiệp">
+                    Tốt nghiệp
+                </option>
+
+            </select>
+
+            <div class="modal-actions">
+
+                <button onclick="saveStudent()">
+                    Lưu
+                </button>
+
+                <button
+                    onclick="closeModal()"
+                    class="btn-danger"
+                >
+                    Hủy
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script type="module" src="auth.js"></script>
+
+    <script type="module" src="students.js"></script>
 
 </body>
+
 </html>

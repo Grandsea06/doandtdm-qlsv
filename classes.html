@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quản lý lớp học</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="sidebar">
+
+    <h2>QLSV Cloud</h2>
+
+    <a href="dashboard.html">Dashboard</a>
+    <a href="students.html">Sinh viên</a>
+    <a href="department.html">Khoa</a>
+    <a href="classes.html">Lớp học</a>
+    <a href="teachers.html">Giảng viên</a>
+    <button onclick="logout()">
+        Đăng xuất
+    </button>
+
+</div>
+
+<div class="main">
+
+    <h1>Quản lý lớp học</h1>
+
+    <div class="toolbar">
+
+        <button onclick="openModal()">
+            + Thêm lớp
+        </button>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Tìm lớp..."
+        >
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Mã lớp</th>
+                <th>Tên lớp</th>
+                <th>Khoa</th>
+                <th>Sĩ số</th>
+                <th>Hành động</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="classTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- Modal -->
+
+<div id="classModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2 id="modalTitle">
+            Thêm lớp học
+        </h2>
+
+        <input
+            type="text"
+            id="classCode"
+            placeholder="Mã lớp"
+        >
+
+        <input
+            type="text"
+            id="className"
+            placeholder="Tên lớp"
+        >
+
+        <select id="departmentName">
+    <option value="">-- Chọn khoa --</option>
+</select>
+        >
+
+        <div style="display:flex;gap:10px;margin-top:15px;">
+
+            <button onclick="saveClass()">
+                Lưu
+            </button>
+
+            <button
+                onclick="closeModal()"
+                style="background:red;"
+            >
+                Hủy
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module" src="auth.js"></script>
+<script type="module" src="classes.js"></script>
+
+</body>
+</html>

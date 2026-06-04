@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quản lý giảng viên</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="sidebar">
+
+    <h2>QLSV Cloud</h2>
+
+    <a href="dashboard.html">Dashboard</a>
+    <a href="students.html">Sinh viên</a>
+    <a href="department.html">Khoa</a>
+    <a href="classes.html">Lớp học</a>
+    <a href="teachers.html">Giảng viên</a>
+
+    <button onclick="logout()">
+        Đăng xuất
+    </button>
+
+</div>
+
+<div class="main">
+
+    <h1>Quản lý giảng viên</h1>
+
+    <div class="toolbar">
+
+        <button onclick="openModal()">
+            + Thêm giảng viên
+        </button>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Tìm kiếm..."
+        >
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Mã GV</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>SĐT</th>
+                <th>Khoa</th>
+                <th>Hành động</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="teacherTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div id="teacherModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2 id="modalTitle">
+            Thêm giảng viên
+        </h2>
+
+        <input id="teacherCode" placeholder="Mã GV">
+
+        <input id="fullName" placeholder="Họ tên">
+
+        <input id="email" placeholder="Email">
+
+        <input id="phone" placeholder="Số điện thoại">
+
+        <select id="departmentName">
+
+    <option value="">
+        Chọn khoa
+    </option>
+
+</select>
+
+        <button onclick="saveTeacher()">
+            Lưu
+        </button>
+
+        <button onclick="closeModal()">
+            Hủy
+        </button>
+
+    </div>
+
+</div>
+
+<script type="module" src="auth.js"></script>
+<script type="module" src="teachers.js"></script>
+
+</body>
+</html>

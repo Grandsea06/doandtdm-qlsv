@@ -15,11 +15,12 @@
 <div class="sidebar">
 
     <h2>QLSV Cloud</h2>
-
+    
     <a href="dashboard.html">Dashboard</a>
-
     <a href="students.html">Sinh viên</a>
-
+    <a href="department.html">Khoa</a>
+    <a href="classes.html">Lớp học</a>
+    <a href="teachers.html">Giảng viên</a>
     <button onclick="logout()">
         Đăng xuất
     </button>
@@ -32,22 +33,22 @@
 
     <div class="cards">
 
-        <div class="card">
-            <h2 id="studentCount">0</h2>
-            <p>Sinh viên</p>
-        </div>
-
-        <div class="card">
-            <h2>5</h2>
-            <p>Lớp học</p>
-        </div>
-
-        <div class="card">
-            <h2>3</h2>
-            <p>Khoa</p>
-        </div>
-
+    <div class="card">
+        <h2 id="totalStudents">0</h2>
+        <p>Sinh viên</p>
     </div>
+
+    <div class="card">
+        <h2 id="totalClasses">0</h2>
+        <p>Lớp học</p>
+    </div>
+
+    <div class="card">
+        <h2 id="totalDepartments">0</h2>
+        <p>Khoa</p>
+    </div>
+
+</div>
 
 </div>
 <script type="module" src="auth.js"></script>

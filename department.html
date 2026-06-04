@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Quản lý khoa</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sidebar">
+
+    <h2>QLSV Cloud</h2>
+
+    <a href="dashboard.html">Dashboard</a>
+    <a href="students.html">Sinh viên</a>
+    <a href="department.html">Khoa</a>
+    <a href="classes.html">Lớp học</a>
+    <a href="teachers.html">Giảng viên</a>
+    <button onclick="logout()">
+        Đăng xuất
+    </button>
+
+</div>
+
+<div class="main">
+
+    <h1>Quản lý khoa</h1>
+
+    <div class="toolbar">
+
+        <button onclick="openModal()">
+            + Thêm khoa
+        </button>
+
+        <input
+            id="searchInput"
+            placeholder="Tìm khoa..."
+        >
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Mã khoa</th>
+                <th>Tên khoa</th>
+                <th>Mô tả</th>
+                <th>Hành động</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="departmentTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div id="departmentModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2 id="modalTitle">
+            Thêm khoa
+        </h2>
+
+        <input
+            id="departmentCode"
+            placeholder="Mã khoa"
+        >
+
+        <input
+            id="departmentName"
+            placeholder="Tên khoa"
+        >
+
+        <textarea
+            id="description"
+            placeholder="Mô tả"
+        ></textarea>
+
+        <button onclick="saveDepartment()">
+            Lưu
+        </button>
+
+        <button onclick="closeModal()">
+            Hủy
+        </button>
+
+    </div>
+
+</div>
+
+<script type="module" src="auth.js"></script>
+<script type="module" src="department.js"></script>
+
+</body>
+</html>

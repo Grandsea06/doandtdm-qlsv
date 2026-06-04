@@ -14,7 +14,9 @@ import {
   addDoc,
   getDocs,
   deleteDoc,
-  doc
+  updateDoc,
+  doc,
+  getDoc
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -41,7 +43,9 @@ export {
   addDoc,
   getDocs,
   deleteDoc,
+  updateDoc,
   doc,
+  getDoc,
   signInWithEmailAndPassword,
   signOut
 };
