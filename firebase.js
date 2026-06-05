@@ -4,6 +4,7 @@ from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
   getAuth,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
@@ -16,7 +17,8 @@ import {
   deleteDoc,
   updateDoc,
   doc,
-  getDoc
+  getDoc,
+  setDoc
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -46,6 +48,8 @@ export {
   updateDoc,
   doc,
   getDoc,
+  setDoc,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut
 };

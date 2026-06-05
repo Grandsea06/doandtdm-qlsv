@@ -1,13 +1,20 @@
 import {
-db,
-collection,
-addDoc,
-getDocs,
-deleteDoc,
-doc,
-updateDoc
+    db,
+    auth,
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc,
+    updateDoc
 }
 from "./firebase.js";
+
+import {
+    getUserRole,
+    cacheRole,
+    canEdit
+} from "./rolecheck.js";
 
 let departments = [];
 let editingId = null;
@@ -17,8 +24,34 @@ document.getElementById("departmentTable");
 
 const modal =
 document.getElementById("departmentModal");
+const addButton = document.querySelector(".toolbar button");
+
+const updateRoleUI = () => {
+    if (!canEdit() && addButton) {
+        addButton.style.display = "none";
+    }
+};
+
+const initPage = async () => {
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const role = await getUserRole(user);
+        cacheRole(role);
+        updateRoleUI();
+
+        await loadDepartments();
+    });
+};
 
 window.openModal = () => {
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể thêm hoặc sửa khoa.");
+        return;
+    }
 
     editingId = null;
 
@@ -129,17 +162,10 @@ function renderTable(data){
             <td>${dep.description}</td>
 
             <td>
-
-                <button
-                onclick="editDepartment('${dep.id}')">
-                Sửa
-                </button>
-
-                <button
-                onclick="deleteDepartment('${dep.id}')">
-                Xóa
-                </button>
-
+                ${canEdit() ? `
+                <button onclick="editDepartment('${dep.id}')">Sửa</button>
+                <button onclick="deleteDepartment('${dep.id}')">Xóa</button>
+                ` : `<span>Chỉ xem</span>`}
             </td>
 
         </tr>
@@ -148,6 +174,10 @@ function renderTable(data){
 }
 
 window.editDepartment = (id)=>{
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể sửa khoa.");
+        return;
+    }
 
     const dep =
     departments.find(
@@ -177,6 +207,10 @@ window.editDepartment = (id)=>{
 
 window.deleteDepartment =
 async(id)=>{
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể xóa khoa.");
+        return;
+    }
 
     if(!confirm("Xóa khoa?"))
         return;
@@ -222,4 +256,4 @@ document
     }
 );
 
-loadDepartments();
+initPage();

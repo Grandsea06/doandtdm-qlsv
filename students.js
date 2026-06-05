@@ -1,5 +1,6 @@
 import {
     db,
+    auth,
     collection,
     addDoc,
     getDocs,
@@ -9,11 +10,40 @@ import {
     getDoc
 } from "./firebase.js";
 
+import {
+    getUserRole,
+    cacheRole,
+    canEdit
+} from "./rolecheck.js";
+
 let students = [];
 let editingId = null;
 
 const table = document.getElementById("studentTable");
 const modal = document.getElementById("studentModal");
+const addButton = document.querySelector(".toolbar button");
+
+const updateRoleUI = () => {
+    if (!canEdit() && addButton) {
+        addButton.style.display = "none";
+    }
+};
+
+const initPage = async () => {
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const role = await getUserRole(user);
+        cacheRole(role);
+        updateRoleUI();
+
+        await loadDepartments();
+        await loadStudents();
+    });
+};
 
 async function loadClasses() {
 
@@ -113,6 +143,7 @@ window.openAddModal = async () => {
 
     editingId = null;
 
+    await loadDepartments();
     await loadClasses();
 
     document.getElementById("modalTitle").innerText =
@@ -266,17 +297,10 @@ function renderTable(data) {
             <td>${student.email || ""}</td>
 
             <td>
-
-                <button
-                onclick="editStudent('${student.id}')">
-                    Sửa
-                </button>
-
-                <button
-                onclick="removeStudent('${student.id}')">
-                    Xóa
-                </button>
-
+                ${canEdit() ? `
+                <button onclick="editStudent('${student.id}')">Sửa</button>
+                <button onclick="removeStudent('${student.id}')">Xóa</button>
+                ` : `<span>Chỉ xem</span>`}
             </td>
 
         </tr>
@@ -285,7 +309,12 @@ function renderTable(data) {
 }
 
 window.editStudent = async (id) => {
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể sửa sinh viên.");
+        return;
+    }
 
+    await loadDepartments();
     await loadClasses();
 
     const student =
@@ -335,6 +364,10 @@ window.editStudent = async (id) => {
 };
 
 window.removeStudent = async (id) => {
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể xóa sinh viên.");
+        return;
+    }
 
     if (!confirm("Bạn có chắc muốn xóa?"))
         return;
@@ -409,17 +442,11 @@ document
 
     renderTable(result);
 });
+
 document
 .getElementById("department")
-.addEventListener(
-    "change",
-    (e)=>{
+.addEventListener("change", (e) => {
+    loadClassesByDepartment(e.target.value);
+});
 
-        loadClassesByDepartment(
-            e.target.value
-        );
-
-    }
-);
-loadDepartments();
-loadStudents();
+initPage();

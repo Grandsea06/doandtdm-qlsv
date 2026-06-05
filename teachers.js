@@ -1,5 +1,6 @@
 import {
     db,
+    auth,
     collection,
     addDoc,
     getDocs,
@@ -9,14 +10,19 @@ import {
 }
 from "./firebase.js";
 
+import {
+    getUserRole,
+    cacheRole,
+    canEdit
+} from "./rolecheck.js";
+
 let teachers = [];
 let editingId = null;
 
-const table =
-document.getElementById("teacherTable");
+const table = document.getElementById("teacherTable");
+const modal = document.getElementById("teacherModal");
+const addButton = document.querySelector(".toolbar button");
 
-const modal =
-document.getElementById("teacherModal");
 async function loadDepartments(){
 
     const snapshot =
@@ -51,11 +57,40 @@ async function loadDepartments(){
     });
 
 }
+
+const updateRoleUI = () => {
+    if (!canEdit()) {
+        if (addButton) {
+            addButton.style.display = "none";
+        }
+    }
+};
+
+const initPage = async () => {
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const role = await getUserRole(user);
+        cacheRole(role);
+        updateRoleUI();
+
+        await loadDepartments();
+        await loadTeachers();
+    });
+};
+
 /* =====================
    MỞ MODAL
 ===================== */
 
 window.openModal = () => {
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể thêm hoặc sửa giảng viên.");
+        return;
+    }
 
     editingId = null;
 
@@ -85,6 +120,10 @@ window.closeModal = () => {
 ===================== */
 
 window.saveTeacher = async () => {
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể lưu thay đổi.");
+        return;
+    }
 
     const teacherCode =
     document.getElementById("teacherCode").value;
@@ -213,6 +252,8 @@ function renderTable(data){
         return;
     }
 
+    const editable = canEdit();
+
     data.forEach(item=>{
 
         table.innerHTML += `
@@ -230,17 +271,10 @@ function renderTable(data){
             <td>${item.departmentName || ""}</td>
 
             <td>
-
-                <button
-                    onclick="editTeacher('${item.id}')">
-                    Sửa
-                </button>
-
-                <button
-                    onclick="deleteTeacher('${item.id}')">
-                    Xóa
-                </button>
-
+                ${editable ? `
+                <button onclick="editTeacher('${item.id}')">Sửa</button>
+                <button onclick="deleteTeacher('${item.id}')">Xóa</button>
+                ` : `<span>Chỉ xem</span>`}
             </td>
 
         </tr>
@@ -256,6 +290,10 @@ function renderTable(data){
 ===================== */
 
 window.editTeacher = (id)=>{
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể sửa giảng viên.");
+        return;
+    }
 
     const item =
     teachers.find(
@@ -292,6 +330,10 @@ window.editTeacher = (id)=>{
 ===================== */
 
 window.deleteTeacher = async(id)=>{
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể xóa giảng viên.");
+        return;
+    }
 
     if(
         !confirm(
@@ -361,5 +403,4 @@ document
    KHỞI CHẠY
 ===================== */
 
-loadDepartments();
-loadTeachers();
+initPage();

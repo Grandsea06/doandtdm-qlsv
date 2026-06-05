@@ -1,5 +1,6 @@
 import {
     db,
+    auth,
     collection,
     addDoc,
     getDocs,
@@ -9,6 +10,12 @@ import {
 }
 from "./firebase.js";
 
+import {
+    getUserRole,
+    cacheRole,
+    canEdit
+} from "./rolecheck.js";
+
 let classes = [];
 let editingId = null;
 
@@ -17,6 +24,7 @@ document.getElementById("classTable");
 
 const modal =
 document.getElementById("classModal");
+const addButton = document.querySelector(".toolbar button");
 async function loadDepartments(){
 
     const snapshot =
@@ -39,11 +47,38 @@ async function loadDepartments(){
         `;
     });
 }
+
+const updateRoleUI = () => {
+    if (!canEdit() && addButton) {
+        addButton.style.display = "none";
+    }
+};
+
+const initPage = async () => {
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const role = await getUserRole(user);
+        cacheRole(role);
+        updateRoleUI();
+
+        await loadDepartments();
+        await loadClasses();
+    });
+};
+
 /* =========================
    MỞ MODAL THÊM
 ========================= */
 
 window.openModal = () => {
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể thêm hoặc sửa lớp học.");
+        return;
+    }
 
     editingId = null;
 
@@ -216,17 +251,10 @@ function renderTable(data){
             <td>${item.totalStudents}</td>
 
             <td>
-
-                <button
-                    onclick="editClass('${item.id}')">
-                    Sửa
-                </button>
-
-                <button
-                    onclick="deleteClass('${item.id}')">
-                    Xóa
-                </button>
-
+                ${canEdit() ? `
+                <button onclick="editClass('${item.id}')">Sửa</button>
+                <button onclick="deleteClass('${item.id}')">Xóa</button>
+                ` : `<span>Chỉ xem</span>`}
             </td>
 
         </tr>
@@ -241,6 +269,10 @@ function renderTable(data){
 ========================= */
 
 window.editClass = (id)=>{
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể sửa lớp học.");
+        return;
+    }
 
     const item =
     classes.find(x=>x.id===id);
@@ -269,6 +301,10 @@ window.editClass = (id)=>{
 ========================= */
 
 window.deleteClass = async(id)=>{
+    if (!canEdit()) {
+        alert("Chỉ admin mới có thể xóa lớp học.");
+        return;
+    }
 
     const confirmDelete =
     confirm("Bạn có chắc muốn xóa lớp này?");
@@ -331,5 +367,4 @@ document
    KHỞI CHẠY
 ========================= */
 
-loadClasses();
-loadDepartments
+initPage();
